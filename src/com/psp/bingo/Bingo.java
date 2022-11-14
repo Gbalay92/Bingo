@@ -1,6 +1,9 @@
 package com.psp.bingo;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 
 public class Bingo implements Runnable{
     private boolean ganador = false;
@@ -49,11 +52,22 @@ public class Bingo implements Runnable{
                 do {
                     n = aleatorio(10 * j, (10 * j) + 9);
                 } while (numerosGenerados.contains(n));
-
                 numerosGenerados.add(n);
-                carton[i][j] = n;
             }
-        }/*
+
+        }
+        //ordenar numeros en arraylist
+        Collections.sort(numerosGenerados);
+        int z=0;
+        //contruir arraybidimensional
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 3; j++) {
+                carton[j][i] = numerosGenerados.get(z);
+                z++;
+            }
+
+        }
+        /*
         for (int i = 0; i < 3; i++) {
             System.out.println(" ");
             for (int j = 0; j < 9; j++) {
