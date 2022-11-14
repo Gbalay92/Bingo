@@ -5,17 +5,17 @@ import java.util.ArrayList;
 public class App {
     public static void main(String[] args) {
         Bingo bombo = new Bingo();
-
-        bombo.rellenarBingo();
-
-        System.out.println(bombo.getBolas());
-        for (int i = 0; i < 50; i++) {
-            System.out.println(bombo.sacarBola());
-        }
-        System.out.println(bombo.getBolas());
-        bombo.generarNumeros();
+        Jugador jugador1 = new Jugador("Gonzalo", 50, bombo);
+        Jugador jugador2 = new Jugador("Ramon", 50,bombo);
+        Jugador jugador3 = new Jugador("Alberto", 50, bombo);
+        Jugador jugador4 = new Jugador("Pablo", 50, bombo);
 
 
+        new Thread(bombo).start();
+        new Thread(jugador1).start();
+        new Thread(jugador2).start();
+        new Thread(jugador3).start();
+        new Thread(jugador4).start();
 
     }
 

@@ -3,12 +3,13 @@ package com.psp.bingo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Bingo implements Runnable{
     private boolean ganador = false;
     private ArrayList<Integer> bolas = new ArrayList<>();
-    private ArrayList<Carton> cartones= new ArrayList<>();
+    private CopyOnWriteArrayList<Carton> cartones= new CopyOnWriteArrayList<>();
     public Bingo(){
         super();
     }
@@ -21,6 +22,34 @@ public class Bingo implements Runnable{
         return bolas;
     }
 
+
+    public synchronized ArrayList<Carton> asignar(int numeroCartones){
+        ArrayList<Carton> carton = new ArrayList<Carton>();
+        int i = 0;
+        while(i < numeroCartones){
+            this.cartones.get(0);
+            this.cartones.remove(0);
+        }
+        return carton;
+    }
+    public boolean comprobarCartones(ArrayList<Carton> cartonesj){
+        int contador=0;
+        for(Carton carton: cartones){
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; i < 9; j++){
+                    if(bolas.contains(carton.numeros[i][j])){
+                        return false;
+                    }else{
+                        contador++;
+                    }if(contador==15){
+                        this.ganador=true;
+                        return true;
+                    }
+                }
+
+            }
+        }return false;
+    }
     public void rellenarBingo(){
         for (int i = 1; i < 91; i++) {
             this.bolas.add(i);
@@ -30,6 +59,7 @@ public class Bingo implements Runnable{
         int indice=(int)(Math.random()*this.bolas.size());
         //System.out.println("tamaño lista: " + this.bolas.size() + "numero generado " + indice);
         int bola=this.bolas.get(indice);
+        System.out.println("bola: " + bola);
         bolas.remove(indice);
         return bola;
     }
@@ -92,13 +122,21 @@ public class Bingo implements Runnable{
         synchronized(new Object()){
             rellenarBingo();
             generarCartones();
-            notifyAll();
         }
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        while(!this.ganador){
+            sacarBola();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
 
     }
 }

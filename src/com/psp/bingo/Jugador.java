@@ -3,29 +3,43 @@ package com.psp.bingo;
 import java.util.ArrayList;
 
 public class Jugador implements Runnable {
+    private boolean ganador = false;
     private ArrayList<Carton> cartones;
     private String nombre;
     private int creditos;
     private Bingo bingo;
 
-    public Jugador(ArrayList<Carton> cartones, String nombre, int creditos, Bingo bingo) {
-        this.cartones = cartones;
+    public Jugador(String nombre, int creditos, Bingo bingo) {
         this.nombre = nombre;
         this.creditos = creditos;
         this.bingo = bingo;
     }
 
+    public void gastar(int numeroCartones){
+        this.creditos-=(numeroCartones*2);
+    }
+
     @Override
     public void run() {
-        synchronized(new Object()) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        gastar(5);
+        cartones=bingo.asignar(5);
+        System.out.println(" al jugador: " + this.nombre + " le quedan " + this.creditos + " y juega con " + this.cartones.size() +" cartones");
+        while (!this.bingo.getGanador()) {
+
+           this.ganador= bingo.comprobarCartones(cartones);
             try {
-                wait();
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-        while (!this.bingo.getGanador()) {
-
+        if (this.ganador){
+            System.out.println(this.nombre + "HA CANTADO BINGO");
         }
     }
 }
