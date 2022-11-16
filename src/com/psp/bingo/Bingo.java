@@ -27,8 +27,9 @@ public class Bingo implements Runnable{
         ArrayList<Carton> carton = new ArrayList<Carton>();
         int i = 0;
         while(i < numeroCartones){
-            this.cartones.get(0);
+            carton.add(this.cartones.get(0));
             this.cartones.remove(0);
+            i++;
         }
         return carton;
     }

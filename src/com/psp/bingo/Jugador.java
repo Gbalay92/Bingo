@@ -28,7 +28,7 @@ public class Jugador implements Runnable {
         }
         gastar(5);
         cartones=bingo.asignar(5);
-        System.out.println(" al jugador: " + this.nombre + " le quedan " + this.creditos + " y juega con " + this.cartones.size() +" cartones");
+        System.out.println(" al jugador " + this.nombre + " le quedan " + this.creditos + " y juega con " + cartones.size() +" cartones");
         while (!this.bingo.getGanador()) {
 
            this.ganador= bingo.comprobarCartones(cartones);
