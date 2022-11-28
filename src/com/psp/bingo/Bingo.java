@@ -1,7 +1,6 @@
 package com.psp.bingo;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -40,13 +39,15 @@ public class Bingo implements Runnable{
                 for (int j = 0; i < 9; j++){
                     if(bolas.contains(carton.numeros[i][j])){
                         return false;
-                    }else{
+                    }else {
                         contador++;
-                    }if(contador==15){
-                        this.ganador=true;
-                        return true;
+                        System.out.println(contador);
+                    }
                     }
                 }
+            if(contador==15){
+                this.ganador=true;
+                return true;
 
             }
         }return false;
@@ -56,20 +57,23 @@ public class Bingo implements Runnable{
             this.bolas.add(i);
         }
     }
-    public int sacarBola(){
+    public void sacarBola(){
         int indice=(int)(Math.random()*this.bolas.size());
         //System.out.println("tamaño lista: " + this.bolas.size() + "numero generado " + indice);
         int bola=this.bolas.get(indice);
         System.out.println("bola: " + bola);
         bolas.remove(indice);
-        return bola;
+
     }
 
     public void generarCartones(){
         int contador=0;
         while(contador<50){
             Carton carton= new Carton(generarNumeros());
+            //añadir huecos...
+
             cartones.add(carton);
+            contador++;
         }
     }
     public int[][] generarNumeros(){
@@ -77,7 +81,7 @@ public class Bingo implements Runnable{
         ArrayList<Integer> numerosGenerados = new ArrayList<>();
 
         int n;
-        //generar numeros
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 do {
@@ -98,17 +102,29 @@ public class Bingo implements Runnable{
             }
 
         }
-        /*
-        for (int i = 0; i < 3; i++) {
-            System.out.println(" ");
-            for (int j = 0; j < 9; j++) {
-                System.out.print(carton[i][j] + " ");
-            }
-        }*/
+
 
         // generar 12 n=0 en el carton
-        for (int i = 0; i < 12; i++) {
-
+        ArrayList<Integer> huecos = new ArrayList<Integer>();
+        int hueco;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                do{
+                    hueco=aleatorio(0,7);
+                }while(huecos.contains(hueco));
+                huecos.add(hueco);
+            }
+            for(Integer borrar :  huecos){
+                System.out.println(borrar);
+                carton[i][borrar]=0;
+            }
+            huecos.clear();
+        }
+        for (int i = 0; i < 3; i++) {
+            System.out.println(" ");
+            for (int j = 0; j < 8; j++) {
+                System.out.print(carton[i][j] + " ");
+            }
         }
 
         return carton;
@@ -120,10 +136,10 @@ public class Bingo implements Runnable{
 
     @Override
     public void run() {
-        synchronized(new Object()){
+
             rellenarBingo();
             generarCartones();
-        }
+
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {

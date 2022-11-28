@@ -1,6 +1,5 @@
 package com.psp.bingo;
 
-import java.util.ArrayList;
 
 public class Carton {
 

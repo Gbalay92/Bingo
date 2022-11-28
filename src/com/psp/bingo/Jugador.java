@@ -30,7 +30,6 @@ public class Jugador implements Runnable {
         cartones=bingo.asignar(5);
         System.out.println(" al jugador " + this.nombre + " le quedan " + this.creditos + " y juega con " + cartones.size() +" cartones");
         while (!this.bingo.getGanador()) {
-
            this.ganador= bingo.comprobarCartones(cartones);
             try {
                 Thread.sleep(1000);
