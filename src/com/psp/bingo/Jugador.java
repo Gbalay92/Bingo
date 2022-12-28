@@ -20,7 +20,7 @@ public class Jugador implements Runnable {
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
@@ -28,7 +28,8 @@ public class Jugador implements Runnable {
         }
         gastar(5);
         cartones=bingo.asignar(5);
-        System.out.println(" al jugador " + this.nombre + " le quedan " + this.creditos + " y juega con " + cartones.size() +" cartones");
+
+       System.out.println(" al jugador " + this.nombre + " le quedan " + this.creditos + " y juega con " + cartones.size() +" cartones");
         while (!this.bingo.getGanador()) {
            this.ganador= bingo.comprobarCartones(cartones);
             try {
@@ -38,7 +39,7 @@ public class Jugador implements Runnable {
             }
         }
         if (this.ganador){
-            System.out.println(this.nombre + "HA CANTADO BINGO");
+            System.out.println(this.nombre + " HA CANTADO BINGO");
         }
     }
 }

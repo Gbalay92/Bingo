@@ -11,6 +11,7 @@ public class Bingo implements Runnable{
     private CopyOnWriteArrayList<Carton> cartones= new CopyOnWriteArrayList<>();
     public Bingo(){
         super();
+        rellenarBingo();
     }
 
     public boolean getGanador(){
@@ -32,25 +33,34 @@ public class Bingo implements Runnable{
         }
         return carton;
     }
-    public boolean comprobarCartones(ArrayList<Carton> cartonesj){
-        int contador=0;
-        for(Carton carton: cartones){
+    public boolean comprobarCartones(ArrayList<Carton> cartonesj) {
+        int contador;
+        for (Carton carton : cartones) {
+            contador=0;
             for (int i = 0; i < 3; i++) {
-                for (int j = 0; i < 9; j++){
-                    if(bolas.contains(carton.numeros[i][j])){
-                        return false;
-                    }else {
-                        contador++;
-                        System.out.println(contador);
-                    }
+                for (int j = 0; j < 9; j++) {
+                    if (!bolas.contains(carton.numeros[i][j]) && carton.numeros[i][j] != 0) {
+                            contador++;
+                            //System.out.println("contador: "+contador);
+                        //System.out.println(carton.numeros[i][j]);
                     }
                 }
-            if(contador==15){
-                this.ganador=true;
-                return true;
+            }
+            if (contador == 15) {
+                this.ganador = true;
+                for (int i = 0; i < 3; i++) {
+                    System.out.println(" ");
+                    for (int j = 0; j < 8; j++) {
+                        System.out.print(carton.numeros[i][j] + " ");
+                    }
+                }
+                System.out.println();
+                    return true;
+
 
             }
-        }return false;
+        }
+        return false;
     }
     public void rellenarBingo(){
         for (int i = 1; i < 91; i++) {
@@ -75,6 +85,7 @@ public class Bingo implements Runnable{
             cartones.add(carton);
             contador++;
         }
+
     }
     public int[][] generarNumeros(){
         int[][] carton = new int[3][9];
@@ -110,21 +121,15 @@ public class Bingo implements Runnable{
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
                 do{
-                    hueco=aleatorio(0,7);
+                    hueco=aleatorio(0,8);
                 }while(huecos.contains(hueco));
                 huecos.add(hueco);
             }
             for(Integer borrar :  huecos){
-                System.out.println(borrar);
+                //System.out.println(borrar);
                 carton[i][borrar]=0;
             }
             huecos.clear();
-        }
-        for (int i = 0; i < 3; i++) {
-            System.out.println(" ");
-            for (int j = 0; j < 8; j++) {
-                System.out.print(carton[i][j] + " ");
-            }
         }
 
         return carton;
@@ -136,8 +141,6 @@ public class Bingo implements Runnable{
 
     @Override
     public void run() {
-
-            rellenarBingo();
             generarCartones();
 
         try {
